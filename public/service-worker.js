@@ -3,6 +3,7 @@ const FILES_TO_CACHE = [
     '/',
     '/index.html',
     '/index.js',
+    '/db.js',
     '/manifest.webmanifest',
     '/styles.css',
     '/icons/icon-192x192.png',
@@ -62,7 +63,7 @@ self.addEventListener('fetch', event => {
         return;
     };
 
-    
+
     event.respondWith(
         caches.match(event.request)
             .then(res => res || fetch(event.request))
