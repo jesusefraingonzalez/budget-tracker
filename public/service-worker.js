@@ -30,10 +30,43 @@ self.addEventListener('activate', event => {
         caches.keys()
             .then(keyList => {
                 console.log(keyList);
+                return Promise.all(
+                    keyList.map(key => {
+                        if (key !== CACHE_NAME && key !== DATA_CACHE) {
+                            console.log('removing old caches ', key);
+                            return caches.delete(key);
+                        }
+                    })
+                );
             })
     );
-});
-// fetch event listener to update data
 
+    self.clients.claim();
+});
+
+// fetch event listener to update data
+self.addEventListener('fetch', event => {
+    if (event.request.url.includes('/api/')) {
+        event.respondWith(
+            caches.open(DATA_CACHE)
+                .then(cache => {
+                    return fetch(event.request)
+                        .then(res => {
+                            if (res.status === 200) cache.put(event.request.url, res.clone());
+                            return res;
+                        })
+                        .catch(err => cache.match(event.request))
+                })
+                .catch(err => console.err(err))
+        );
+        return;
+    };
+
+    
+    event.respondWith(
+        caches.match(event.request)
+            .then(res => res || fetch(event.request))
+    );
+});
 
 
