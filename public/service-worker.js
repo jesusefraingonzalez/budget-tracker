@@ -25,7 +25,14 @@ self.addEventListener('install', (event) => {
 });
 
 // activate event listener
-
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys()
+            .then(keyList => {
+                console.log(keyList);
+            })
+    );
+});
 // fetch event listener to update data
 
 
