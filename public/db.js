@@ -15,3 +15,6 @@ request.onsuccess(({ target }) => {
     // check the online database if the app is online
     if (navigator.onLine) checkDatabase();
 });
+
+// error handler
+request.onerror(({ target }) => console.error(target.errorCode));
