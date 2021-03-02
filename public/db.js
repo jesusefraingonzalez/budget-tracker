@@ -44,7 +44,7 @@ const checkDatabase = () => {
     };
 };
 
-const saveRecord = () => {
+const saveRecord = (record) => {
     const transaction = db.transaction(['pending'], 'readwrite');
     const store = transaction.objectStore('pending');
     store.add(record);
