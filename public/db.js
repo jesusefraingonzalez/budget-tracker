@@ -19,7 +19,6 @@ request.onsuccess(({ target }) => {
 request.onerror(({ target }) => console.error(target.errorCode));
 
 const checkDatabase = () => {
-
     const transaction = db.transaction(['pending'], 'readwrite');
     const store = transaction.objectStore('pending');
     const getAll = store.getAll();
@@ -40,7 +39,13 @@ const checkDatabase = () => {
                     const store = transaction.objectStore('pending');
                     store.clear();
                 });
-                
+
         };
     };
+};
+
+const saveRecord = () => {
+    const transaction = db.transaction(['pending'], 'readwrite');
+    const store = transaction.objectStore('pending');
+    store.add(record);
 }
