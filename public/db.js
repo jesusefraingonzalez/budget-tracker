@@ -18,6 +18,7 @@ request.onsuccess(({ target }) => {
 // error handler
 request.onerror(({ target }) => console.error(target.errorCode));
 
+// checks the online database
 const checkDatabase = () => {
     const transaction = db.transaction(['pending'], 'readwrite');
     const store = transaction.objectStore('pending');
@@ -44,8 +45,12 @@ const checkDatabase = () => {
     };
 };
 
+// add a record to the pending object store
 const saveRecord = (record) => {
     const transaction = db.transaction(['pending'], 'readwrite');
     const store = transaction.objectStore('pending');
     store.add(record);
 }
+
+// check the database when the app is online
+window.addEventListener('online', checkDatabase);
