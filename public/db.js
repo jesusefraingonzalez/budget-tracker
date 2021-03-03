@@ -3,20 +3,20 @@ let db;
 // open the budget database
 const request = indexedDB.open('budget_database', 1);
 
-request.onupgradeneeded(({ target }) => {
+request.onupgradeneeded = ({ target }) => {
     db = target.result;
-    const objectStore = db.createObjectStore('pending');
-});
+    const objectStore = db.createObjectStore('pending', { autoIncrement: true });
+};
 
-request.onsuccess(({ target }) => {
+request.onsuccess = ({ target }) => {
     db = target.result;
 
     // check the online database if the app is online
     if (navigator.onLine) checkDatabase();
-});
+};
 
 // error handler
-request.onerror(({ target }) => console.error(target.errorCode));
+request.onerror = ({ target }) => console.error(target.errorCode);
 
 // checks the online database
 const checkDatabase = () => {
@@ -25,7 +25,7 @@ const checkDatabase = () => {
     const getAll = store.getAll();
 
     getAll.onsuccess = () => {
-        if(getAll.result.length > 0) {
+        if (getAll.result.length > 0) {
             fetch('/api/transaction/', {
                 method: 'POST',
                 body: JSON.stringify(getAll.result),
