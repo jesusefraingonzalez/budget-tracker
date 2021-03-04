@@ -6,6 +6,10 @@ const request = indexedDB.open('budget_database', 1);
 request.onupgradeneeded = ({ target }) => {
     db = target.result;
     const objectStore = db.createObjectStore('pending', { autoIncrement: true });
+    
+    objectStore.createIndex('dateIndex', 'date');
+    objectStore.createIndex('nameIndex', 'name');
+    objectStore.createIndex('valueIndex', 'value');
 };
 
 request.onsuccess = ({ target }) => {
